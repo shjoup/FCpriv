@@ -5,8 +5,8 @@ const password_input = document.getElementById('password-input')
 const repeat_password_input = document.getElementById('repeat-password-input')
 const error_message = document.getElementById('error-message')
 
-form.addEventListener('submit', (e) => {
-    // e.preventDefault()
+form.addEventListener('submit', async (e) => {
+    e.preventDefault()
 
     let errors = [] 
     if (username_input){
@@ -17,8 +17,47 @@ form.addEventListener('submit', (e) => {
         errors= getLoginFormErrors(email_input.value, password_input.value)
 
     if(errors.length > 0){
-        e.preventDefault()
         error_message.innerText=errors.join(". ")
+        return
+    }
+
+    error_message.innerText = ''
+    const isSignup = Boolean(username_input)
+    const submitButton = form.querySelector('button[type="submit"]')
+    submitButton.disabled = true
+
+    try {
+        const response = await fetch(isSignup ? '/api/auth/signup' : '/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify(isSignup ? {
+                username: username_input.value,
+                email: email_input.value,
+                password: password_input.value,
+                repeatPassword: repeat_password_input.value
+            } : {
+                email: email_input.value,
+                password: password_input.value
+            })
+        })
+        const result = await response.json()
+        if (!response.ok) {
+            error_message.innerText = result.error || 'Authentication failed. Please try again.'
+            const field = {
+                username: username_input,
+                email: email_input,
+                password: password_input,
+                repeatPassword: repeat_password_input
+            }[result.field]
+            field?.parentElement.classList.add('incorrect')
+            return
+        }
+        window.location.assign('/')
+    } catch {
+        error_message.innerText = 'Could not reach the server. Open this page through the running app.'
+    } finally {
+        submitButton.disabled = false
     }
 })
 

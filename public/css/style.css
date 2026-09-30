@@ -37,6 +37,12 @@ h1{
     text-transform:uppercase;
 }
 
+#error-message:not(:empty){
+    max-width: 400px;
+    margin-top: 12px;
+    color: var(--color-danger);
+}
+
 form{
     width:min(400px, 100%);
     margin-top: 20px;

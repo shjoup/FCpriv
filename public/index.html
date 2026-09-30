@@ -46,6 +46,12 @@
         <div class="hero-copy">
           <p class="eyebrow">Recipe recommendation via ingredient matching</p>
           <h1 id="hero-title">What's in your fridge?</h1>
+          <div class="account-actions" aria-label="Account">
+            <div id="signed-in-actions" hidden>
+              <span id="account-username"></span>
+              <button class="btn ghost" type="button" id="logout-button">Log out</button>
+            </div>
+          </div>
           <p>
             Tick the ingredients you already have. We’ll rank dishes by coverage,
             show what’s missing, and get you cooking without a shopping trip.
@@ -174,5 +180,6 @@
     <script src="/js/api.js"></script>
     <script src="/js/ingredients.js"></script>
     <script src="/js/results.js"></script>
+    <script src="/js/auth-status.js" defer></script>
   </body>
 </html>
