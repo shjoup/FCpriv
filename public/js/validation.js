@@ -55,11 +55,15 @@ function getSignupFormErrors(username, email, password, repeatpassword){
         errors.push('Password is required')
         password_input.parentElement.classList.add('incorrect')
     }
-    if(password.length < 8){
+    else if(password.length < 8){
         errors.push('Password must have at least 8 characters')
         password_input.parentElement.classList.add('incorrect')
     }
-    if(repeatpassword !== password || repeatpassword == null){
+    if(repeatpassword === '' || repeatpassword == null){
+        errors.push('Repeat password is required')
+        repeat_password_input.parentElement.classList.add('incorrect')
+    }
+    else if(repeatpassword !== password){
         errors.push('Passwords must match')
         repeat_password_input.parentElement.classList.add('incorrect')
         password_input.parentElement.classList.add('incorrect')
